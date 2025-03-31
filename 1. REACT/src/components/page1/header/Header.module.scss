@@ -1,0 +1,42 @@
+.header {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    flex-wrap: wrap;
+
+    .nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .header-logo {
+        width: 70px;
+    }
+
+    .navlink {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        transition: transform 0.3s ease-out;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .signin-btn {
+        border: 0;
+        padding: 7px 12px;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: transform 0.3s ease-out;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
