@@ -1,0 +1,23 @@
+:root {
+    --main-color: teal;
+}
+
+/* $mainColor: teal; scss */
+
+.container {
+    max-width: 820px;
+    margin-inline: auto;
+    padding: 30px 20px;
+
+    h1 {
+        color: var(--main-color);
+        /* color: $mainColor; scss */
+    }
+
+    .todoList {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 30px 0;
+    }
+}

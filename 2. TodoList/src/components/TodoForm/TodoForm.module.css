@@ -1,0 +1,32 @@
+.todoForm {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+
+    input {
+        border: 1px solid teal;
+        color: teal;
+        padding: 7px;
+        font-size: 18px;
+        width: 100%;
+
+        &:focus {
+            outline: 1px solid teal;
+        }
+    }
+
+    button {
+        border: 0;
+        padding: 4px 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: teal;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s ease-out;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+.todo {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 128, 128, 0.297);
+    padding: 10px;
+    font-size: 18px;
+
+    button {
+        background-color: crimson;
+        border: none;
+        padding: 4px 10px;
+        color: white;
+        cursor: pointer;
+
+        transition: transform 0.2s ease-out;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
