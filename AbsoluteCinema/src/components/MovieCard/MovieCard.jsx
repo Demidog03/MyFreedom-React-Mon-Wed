@@ -4,8 +4,10 @@ import placholderImage from '../../assets/images/placeholder-image.png'
 import { StarFillIcon, StarIcon } from '../../shared/Icons';
 
 function MovieCard() {
+
+  const array = [1, 2, 4, 5, 6]
   return (
-    <Card style={{ width: '300px' }}>
+    <Card>
       <Card.Img className={classes.cardPoster} variant="top" src={placholderImage} />
       <Card.Body>
         <Card.Text>
@@ -13,7 +15,7 @@ function MovieCard() {
                 EN
             </Badge>
         </Card.Text>
-        <Card.Text>
+        <div className='mb-2'>
             <Stack direction='horizontal' gap={1}>
                 <Badge pill bg="info">
                     Action
@@ -25,7 +27,7 @@ function MovieCard() {
                     Drama
                 </Badge>
             </Stack>
-        </Card.Text>
+        </div>
         <Card.Title>Movie Title</Card.Title>
         <Card.Text>
           Some quick example text to build on the card title and make up the
@@ -34,12 +36,12 @@ function MovieCard() {
         <Card.Text>
           <b>Release date:</b> 2025-03-31
         </Card.Text>
-        <Card.Text className={classes.rating}>
-          <Stack direction='horizontal' alignItems="center" gap={1}>
+        <div className="mb-3">
+          <Stack direction='horizontal' gap={1}>
             <StarFillIcon/> 6/10
           </Stack>
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        </div>
+        <Button variant="primary">See more</Button>
       </Card.Body>
     </Card>
   );
