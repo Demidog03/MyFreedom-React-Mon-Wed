@@ -2,17 +2,35 @@ import {Button, Card, Badge, Stack} from 'react-bootstrap';
 import classes from "./MovieCard.module.css";
 import placholderImage from '../../assets/images/placeholder-image.png'
 import { StarFillIcon, StarIcon } from '../../shared/Icons';
+import { useEffect, useState } from 'react';
 
-function MovieCard() {
+function MovieCard({ language, title, description, releaseDate, rating, image }) {
+  const [cardImage, setCardImage] = useState(placholderImage)
 
-  const array = [1, 2, 4, 5, 6]
+  useEffect(() => {
+    testImage(image)
+  }, [image])
+
+  function testImage(someImage) {
+    const img = new Image() // <img />
+    img.src = someImage // <img src="какая та ссылка" />
+    img.onload = () => { // когда фотка полностью загружается
+      setCardImage(someImage) // нормальная ссылка фильма
+    }
+    img.onerror = () => { // когда фотка не загрузилась
+      setCardImage(placholderImage) // placeholder фотка
+    }
+  }
+
   return (
     <Card>
-      <Card.Img className={classes.cardPoster} variant="top" src={placholderImage} />
+      {/* imageLoading = true -> src={placholderImage} */}
+      {/* imageLoading = false -> src={image} */}
+      <Card.Img className={classes.cardPoster} variant="top" src={cardImage} loading='lazy'/>
       <Card.Body>
         <Card.Text>
-            <Badge bg="dark" text="light">
-                EN
+            <Badge className={classes.language} bg="dark" text="light">
+                {language}
             </Badge>
         </Card.Text>
         <div className='mb-2'>
@@ -28,17 +46,16 @@ function MovieCard() {
                 </Badge>
             </Stack>
         </div>
-        <Card.Title>Movie Title</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+        <Card.Title className={classes.title}>{title}</Card.Title>
+        <Card.Text className={classes.description}>
+          {description}
         </Card.Text>
         <Card.Text>
-          <b>Release date:</b> 2025-03-31
+          <b>Release date:</b> {releaseDate}
         </Card.Text>
         <div className="mb-3">
           <Stack direction='horizontal' gap={1}>
-            <StarFillIcon/> 6/10
+            <StarFillIcon/> <b>{rating.toFixed(1)}</b>/10
           </Stack>
         </div>
         <Button variant="primary">See more</Button>
