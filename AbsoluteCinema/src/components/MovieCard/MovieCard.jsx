@@ -3,9 +3,12 @@ import classes from "./MovieCard.module.css";
 import placholderImage from '../../assets/images/placeholder-image.png'
 import { StarFillIcon, StarIcon } from '../../shared/Icons';
 import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
-function MovieCard({ language, title, description, releaseDate, rating, image }) {
+function MovieCard({ language, title, description, releaseDate, rating, image, id }) {
   const [cardImage, setCardImage] = useState(placholderImage)
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
 
   useEffect(() => {
     testImage(image)
@@ -20,6 +23,10 @@ function MovieCard({ language, title, description, releaseDate, rating, image })
     img.onerror = () => { // когда фотка не загрузилась
       setCardImage(placholderImage) // placeholder фотка
     }
+  }
+
+  function goToMoviePage() {
+    navigate(`/movie/${id}?backPage=${params.get('page')}`)
   }
 
   return (
@@ -58,7 +65,7 @@ function MovieCard({ language, title, description, releaseDate, rating, image })
             <StarFillIcon/> <b>{rating.toFixed(1)}</b>/10
           </Stack>
         </div>
-        <Button variant="primary">See more</Button>
+        <Button variant="primary" onClick={goToMoviePage}>See more</Button>
       </Card.Body>
     </Card>
   );
