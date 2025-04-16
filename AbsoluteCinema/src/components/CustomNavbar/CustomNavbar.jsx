@@ -1,7 +1,14 @@
 import {Button, Container, Form, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 
 
 function CustomNavbar() {
+  const navigate = useNavigate()
+
+  function goToSigninPage() {
+    navigate('/sign-in')
+  }
+
   return (
     <Navbar expand="sm" className="bg-body-tertiary">
       <Container fluid="xl">
@@ -27,7 +34,7 @@ function CustomNavbar() {
             </NavDropdown>
           </Nav>
           <Form className="d-flex">
-            <Button variant="outline-success">Sign-in</Button>
+            <Button onClick={goToSigninPage} variant="outline-success">Sign-in</Button>
           </Form>
         </Navbar.Collapse>
       </Container>

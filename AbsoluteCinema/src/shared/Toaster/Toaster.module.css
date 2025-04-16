@@ -1,0 +1,19 @@
+.toasterContainer {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 99999;
+
+    .toast {
+        border-color: #dc3545;
+    }
+
+    .toasterHeader {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+    .closeBtn {
+        line-height: 1;
+    }
+}
