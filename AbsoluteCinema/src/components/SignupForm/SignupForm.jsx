@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { EmailValidation, PasswordValidation, UsernameValidation } from '../../shared/ValidationRegex'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import PasswordInput from '../../shared/PasswordInput/PasswordInput'
 
 function SignupForm() {
     const navigate = useNavigate()
@@ -127,15 +128,12 @@ function SignupForm() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control
+                <PasswordInput
                     onChange={changePassword}
-                    type="password"
                     placeholder="Enter password"
                     isInvalid={Boolean(errors.password)}
+                    error={errors.password}
                 />
-                <Form.Control.Feedback type="invalid">
-                   {errors.password}
-                </Form.Control.Feedback>
             </Form.Group>
             <Button onClick={goToSigninPage} variant='link'>Already have an account? Sign-in</Button>
             <Button onClick={submitForm} variant="primary" type="submit">

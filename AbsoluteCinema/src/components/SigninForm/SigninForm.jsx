@@ -4,6 +4,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import Toaster from '../../shared/Toaster/Toaster'
 import { useNavigate } from 'react-router'
+import PasswordInput from '../../shared/PasswordInput/PasswordInput'
 
 function SigninForm() {
     const navigate = useNavigate()
@@ -103,15 +104,12 @@ function SigninForm() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control
+                <PasswordInput
                     onChange={changePasswordInput}
-                    type="password"
                     placeholder="Enter password"
                     isInvalid={Boolean(errors.password)}
+                    error={errors.password}
                 />
-                <Form.Control.Feedback type="invalid">
-                   {errors.password}
-                </Form.Control.Feedback>
             </Form.Group>
             <Button onClick={goToSignupPage} variant='link'>Do not have account? Sign-up</Button>
             <Button onClick={submitForm} variant="primary" type="submit">

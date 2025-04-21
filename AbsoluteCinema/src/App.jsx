@@ -4,6 +4,7 @@ import MoviePage from "./pages/MoviePage/MoviePage"
 import TestPage from "./pages/TestPage/TestPage"
 import SigninPage from './pages/SigninPage/SigninPage'
 import SignupPage from './pages/SignupPage/SignupPage'
+import MoviesFiltersPage from './pages/MoviesFiltersPage/MoviesFiltersPage'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/movie/:id' element={<MoviePage/>} />
         <Route path='/sign-in' element={<SigninPage/>} />
         <Route path='/sign-up' element={<SignupPage/>} />
+        <Route path="/movies" element={<MoviesFiltersPage/> }/>
         <Route path='/test' element={<TestPage/>} />
       </Routes>
     </BrowserRouter>
