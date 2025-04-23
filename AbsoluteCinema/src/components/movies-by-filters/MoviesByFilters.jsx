@@ -1,36 +1,60 @@
-import { Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
-import CustomNavbar from '../../components/CustomNavbar/CustomNavbar'
-import classes from './HomePage.module.css'
-import MovieCard from '../../components/MovieCard/MovieCard'
+import { Col, Container, Pagination, Row, Spinner } from 'react-bootstrap'
+import classes from './MoviesByFilters.module.css'
+import MovieCard from '../movie-card/MovieCard'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-function HomePage() {
+function MoviesByFilters() {
     const [params, setParams] = useSearchParams()
-    const [popularMovies, setPopularMovies] = useState([])
-    const [currentPage, setCurrentPage] = useState(+params.get('page') || 1)
+    const [filteredMovies, setFilteredMovies] = useState([])
+    const [totalPages, setTotalPages] = useState(10)
     const [loading, setLoading] = useState(false)
-    
-    console.log(params)
+    const currentPage = +params.get('page') || 1
+
+    let items = [];
+    for (let i = 1; i <= totalPages; i++) {
+        items.push(
+            <Pagination.Item key={i} onClick={() => changePage(i)} active={i === currentPage}>
+                {i}
+            </Pagination.Item>,
+        );
+    }
 
     useEffect(() => {
-        fetchPopularMovies(currentPage)
-    }, [currentPage])
+        if(params) {
+            const filterParams = {}
+            params.forEach((value, key) => {
+                filterParams[key] = value
+            })
 
-    async function fetchPopularMovies(page) {
+            console.log(filterParams)
+            fetchMoviesByFilter(filterParams)
+        }
+    }, [params])
+
+    async function fetchMoviesByFilter(filters) {
         try {
             setLoading(true)
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?page=${page}`, {
+            const link = filters?.query ? 'https://api.themoviedb.org/3/search/movie' : 'https://api.themoviedb.org/3/discover/movie'
+            
+            const response = await axios.get(link, {
+                params: {
+                    ...filters,
+                },
                 headers: {
                     'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`
                 }
             })
-            if (response?.data?.results?.length > 0) {
-                setPopularMovies(response.data.results)
+
+            if (response?.status === 200 && response?.data?.results) {
+                setFilteredMovies(response.data.results)
+                if(response?.data?.total_pages) {
+                    setTotalPages(response.data.total_pages > 10 ? 10 : response.data.total_pages)
+                }
             }
         }
-        catch (err) {
+        catch(err) {
             console.error(err)
         }
         finally {
@@ -39,24 +63,13 @@ function HomePage() {
     }
 
     function changePage(i) {
-        setCurrentPage(i)
-        setParams({ page: i })
-    }
-
-    let items = [];
-    for (let i = 1; i <= 10; i++) {
-        items.push(
-            <Pagination.Item key={i} onClick={() => changePage(i)} active={i === currentPage}>
-                {i}
-            </Pagination.Item>,
-        );
+        params.set('page', i)
+        setParams(params)
     }
 
     return (
-        <>
-            <CustomNavbar />
-            <Container fluid="xl" className={classes.cardContainer}>
-                <h1 className='mb-4'>Popular Movies</h1>
+        <Container fluid="xl" className={classes.cardContainer}>
+                <h1 className='mb-4'>Movies</h1>
                 {loading
                     ? (
                         <div className={classes.spinnerContainer}>
@@ -67,7 +80,7 @@ function HomePage() {
                     )
                     : (
                         <Row xs={1} sm={2} md={3} lg={3} xl={4} className="g-2">
-                            {popularMovies.map((movie, idx) => (
+                            {filteredMovies.map((movie, idx) => (
                                 <Col key={idx}>
                                     <MovieCard
                                         id={movie.id}
@@ -83,10 +96,9 @@ function HomePage() {
                         </Row>
                     )
                 }
-                <Pagination className='mt-4'>{items}</Pagination>
+                {totalPages > 1 && <Pagination className='mt-4'>{items}</Pagination>}
             </Container>
-        </>
     )
 }
 
-export default HomePage
+export default MoviesByFilters

@@ -1,11 +1,11 @@
 import { Button, Form } from 'react-bootstrap'
 import classes from './SignupForm.module.css'
-import Toaster from '../../shared/Toaster/Toaster'
+import Toaster from '../../shared/toaster/Toaster'
 import { useState } from 'react'
 import { EmailValidation, PasswordValidation, UsernameValidation } from '../../shared/ValidationRegex'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
-import PasswordInput from '../../shared/PasswordInput/PasswordInput'
+import PasswordInput from '../../shared/password-input/PasswordInput'
 
 function SignupForm() {
     const navigate = useNavigate()

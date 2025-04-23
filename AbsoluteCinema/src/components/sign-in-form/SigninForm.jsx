@@ -2,9 +2,9 @@ import { Button, Form } from 'react-bootstrap'
 import classes from './SigninForm.module.css'
 import { useState } from 'react'
 import axios from 'axios'
-import Toaster from '../../shared/Toaster/Toaster'
+import Toaster from '../../shared/toaster/Toaster'
 import { useNavigate } from 'react-router'
-import PasswordInput from '../../shared/PasswordInput/PasswordInput'
+import PasswordInput from '../../shared/password-input/PasswordInput'
 
 function SigninForm() {
     const navigate = useNavigate()

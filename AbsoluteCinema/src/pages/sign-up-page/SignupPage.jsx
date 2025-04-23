@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap'
 import classes from './SignupPage.module.css'
-import SignupForm from '../../components/SignupForm/SignupForm'
-import BackButton from '../../shared/BackButton/BackButton'
+import SignupForm from '../../components/sign-up-form/SignupForm'
+import BackButton from '../../shared/back-button/BackButton'
 
 function SignupPage() {
     return (

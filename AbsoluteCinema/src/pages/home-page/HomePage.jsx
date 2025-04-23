@@ -1,15 +1,44 @@
-import { Col, Container, Pagination, Row, Spinner } from 'react-bootstrap'
-import classes from './MoviesByFilters.module.css'
-import MovieCard from '../MovieCard/MovieCard'
+import { Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
+import CustomNavbar from '../../components/custom-navbar/CustomNavbar'
+import classes from './HomePage.module.css'
+import MovieCard from '../../components/movie-card/MovieCard'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-function MoviesByFilters() {
+function HomePage() {
     const [params, setParams] = useSearchParams()
-    const [filteredMovies, setFilteredMovies] = useState([])
+    const [popularMovies, setPopularMovies] = useState([])
     const [loading, setLoading] = useState(false)
     const currentPage = +params.get('page') || 1
+
+    useEffect(() => {
+        fetchPopularMovies(currentPage)
+    }, [currentPage])
+
+    async function fetchPopularMovies(page) {
+        try {
+            setLoading(true)
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?page=${page}`, {
+                headers: {
+                    'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`
+                }
+            })
+            if (response?.data?.results?.length > 0) {
+                setPopularMovies(response.data.results)
+            }
+        }
+        catch (err) {
+            console.error(err)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    function changePage(i) {
+        setParams({ page: i })
+    }
 
     let items = [];
     for (let i = 1; i <= 10; i++) {
@@ -20,50 +49,11 @@ function MoviesByFilters() {
         );
     }
 
-    useEffect(() => {
-        if(params) {
-            const filterParams = {}
-            params.forEach((value, key) => {
-                filterParams[key] = value
-            })
-
-            console.log(filterParams)
-            fetchMoviesByFilter(filterParams)
-        }
-    }, [params])
-
-    async function fetchMoviesByFilter(filters) {
-        try {
-            setLoading(true)
-            const response = await axios.get(`https://api.themoviedb.org/3/discover/movie`, {
-                params: {
-                    ...filters,
-                },
-                headers: {
-                    'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`
-                }
-            })
-
-            if (response?.status === 200 && response?.data?.results?.length > 0) {
-                setFilteredMovies(response.data.results)
-            }
-        }
-        catch(err) {
-            console.error(err)
-        }
-        finally {
-            setLoading(false)
-        }
-    }
-
-    function changePage(i) {
-        params.set('page', i)
-        setParams(params)
-    }
-
     return (
-        <Container fluid="xl" className={classes.cardContainer}>
-                <h1 className='mb-4'>Movies</h1>
+        <>
+            <CustomNavbar />
+            <Container fluid="xl" className={classes.cardContainer}>
+                <h1 className='mb-4'>Popular Movies</h1>
                 {loading
                     ? (
                         <div className={classes.spinnerContainer}>
@@ -74,7 +64,7 @@ function MoviesByFilters() {
                     )
                     : (
                         <Row xs={1} sm={2} md={3} lg={3} xl={4} className="g-2">
-                            {filteredMovies.map((movie, idx) => (
+                            {popularMovies.map((movie, idx) => (
                                 <Col key={idx}>
                                     <MovieCard
                                         id={movie.id}
@@ -92,7 +82,8 @@ function MoviesByFilters() {
                 }
                 <Pagination className='mt-4'>{items}</Pagination>
             </Container>
+        </>
     )
 }
 
-export default MoviesByFilters
+export default HomePage

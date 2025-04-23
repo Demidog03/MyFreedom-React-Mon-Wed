@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
-import HomePage from "./pages/HomePage/HomePage"
-import MoviePage from "./pages/MoviePage/MoviePage"
-import TestPage from "./pages/TestPage/TestPage"
-import SigninPage from './pages/SigninPage/SigninPage'
-import SignupPage from './pages/SignupPage/SignupPage'
-import MoviesFiltersPage from './pages/MoviesFiltersPage/MoviesFiltersPage'
+import HomePage from "./pages/home-page/HomePage"
+import MoviePage from "./pages/movie-page/MoviePage"
+import TestPage from "./pages/test-page/TestPage"
+import SigninPage from './pages/sign-in-page/SigninPage'
+import SignupPage from './pages/sign-up-page/SignupPage'
+import MoviesFiltersPage from './pages/movies-filters-page/MoviesFiltersPage'
 
 function App() {
 

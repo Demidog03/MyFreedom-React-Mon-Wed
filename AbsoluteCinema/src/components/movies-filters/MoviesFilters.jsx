@@ -30,14 +30,20 @@ function MoviesFilters() {
     }
 
     function selectGenre(event) {
-        params.set('with_genres', event.target.value)
+        if(event.target.value === 'noGenre') {
+            params.delete('with_genres')
+        }
+        else {
+            params.set('with_genres', event.target.value)
+        }
         params.set('page', 1) // reset page
+        params.delete('query') // убираем query
         setParams(params)
     }
 
     return (
-        <Form.Select onChange={selectGenre} className={classes.genreFilterSelect} aria-label="Select movie genres">
-            <option>Select genre</option>
+        <Form.Select value={params.get('with_genres') || 'noGenre'} onChange={selectGenre} className={classes.genreFilterSelect} aria-label="Select movie genres">
+            <option value="noGenre">Select genre</option>
             {genres.map(genre =>
                 <option key={genre.id} value={genre.id}>{genre.name}</option>
             )}

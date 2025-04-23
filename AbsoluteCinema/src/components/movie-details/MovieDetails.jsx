@@ -42,7 +42,7 @@ function MovieDetails({
                     <p className={classes.homepage}><b>Homepage:</b> <Button href={homepage} target='_blank' className={classes.homepageLink} variant='link'>{homepage}</Button></p>
                     <p><b>Original language:</b> <Badge bg="dark" className={classes.originalLanguage}>{originalLanguage}</Badge></p>
                     <p><b>Release date:</b> {releaseDate}</p>
-                    <p><b>Vote Average:</b> {averageVote.toFixed(1)}/10</p>
+                    <p><b>Vote Average:</b> {averageVote?.toFixed(1)}/10</p>
                     <p className={classes.status}><b>Status:</b> <Badge pill bg="success">{status}</Badge> </p>
                 </div>
             </div>

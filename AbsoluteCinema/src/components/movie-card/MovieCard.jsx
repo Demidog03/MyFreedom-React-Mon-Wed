@@ -62,7 +62,7 @@ function MovieCard({ language, title, description, releaseDate, rating, image, i
         </Card.Text>
         <div className="mb-3">
           <Stack direction='horizontal' gap={1}>
-            <StarFillIcon/> <b>{rating.toFixed(1)}</b>/10
+            <StarFillIcon/> <b>{rating?.toFixed(1)}</b>/10
           </Stack>
         </div>
         <Button variant="primary" onClick={goToMoviePage}>See more</Button>

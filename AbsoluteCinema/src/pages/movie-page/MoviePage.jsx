@@ -1,6 +1,6 @@
 import { useParams } from 'react-router'
-import CustomNavbar from '../../components/CustomNavbar/CustomNavbar'
-import MovieDetails from '../../components/MovieDetails/MovieDetails'
+import CustomNavbar from '../../components/custom-navbar/CustomNavbar'
+import MovieDetails from '../../components/movie-details/MovieDetails'
 import classes from './MoviePage.module.css'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
