@@ -1,0 +1,22 @@
+.buttonsContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    .themeIcon {
+        display: flex;
+        cursor: pointer;
+    }
+
+    .profileIcon {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        display: flex;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

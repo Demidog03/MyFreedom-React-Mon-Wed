@@ -1,0 +1,12 @@
+.container {
+    padding: 20px 0;
+
+    .title {
+        margin-bottom: 20px;
+    }
+
+    .buttonsContainer {
+        display: flex;
+        gap: 10px;
+    }
+}

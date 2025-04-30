@@ -1,12 +1,14 @@
 import { Button, Form } from 'react-bootstrap'
 import classes from './SigninForm.module.css'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
 import Toaster from '../../shared/toaster/Toaster'
 import { useNavigate } from 'react-router'
 import PasswordInput from '../../shared/password-input/PasswordInput'
+import { UserContext } from '../context/UserContext'
 
 function SigninForm() {
+    const { setCurrentUser } = useContext(UserContext)
     const navigate = useNavigate()
     const [singinData, setSigninData] = useState({
         email: '',
@@ -49,30 +51,55 @@ function SigninForm() {
         try {
             const { email, password } = singinData
 
-            if(!email) {
-                setErrors((errors) => ({...errors, email: 'Email is required!'}))
+            if (!email) {
+                setErrors((errors) => ({ ...errors, email: 'Email is required!' }))
                 hasErrors = true
             }
-            if(!password) {
-                setErrors((errors) => ({...errors, password: 'Password is required!'}))
+            if (!password) {
+                setErrors((errors) => ({ ...errors, password: 'Password is required!' }))
                 hasErrors = true
             }
 
-            if(hasErrors) {
+            if (hasErrors) {
                 return
             }
 
             const response = await axios.post('http://localhost:5000/auth/login', {
                 email, password
             })
-            
-            if(response?.status === 200 && response?.data) {
+
+            if (response?.status === 200 && response?.data) {
+                if (response.data?.data?.accessToken) {
+                    localStorage.setItem('accessToken', response.data.data.accessToken)
+                }
+                await getProfile()
                 navigate('/')
             }
         }
-        catch(err) {
+        catch (err) {
             console.error(err)
             setLoginError(err?.response?.data?.message || 'Error when login!')
+        }
+    }
+
+    async function getProfile() {
+        try {
+            const accessToken = localStorage.getItem('accessToken')
+            if (!accessToken) {
+                return
+            }
+
+            const response = await axios.get('http://localhost:5000/auth/profile', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            if (response.status === 200 && response?.data?.data) {
+                setCurrentUser(response.data.data)
+            }
+        }
+        catch {
+
         }
     }
 
@@ -95,10 +122,10 @@ function SigninForm() {
                     isInvalid={Boolean(errors.email)} // Boolean('') => false, Boolean('Email is required!') => true
                 />
                 <Form.Control.Feedback type="invalid">
-                   {errors.email} {/* Email is required! */}
+                    {errors.email} {/* Email is required! */}
                 </Form.Control.Feedback>
                 <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                    We'll never share your email with anyone else.
                 </Form.Text>
             </Form.Group>
 
@@ -115,7 +142,7 @@ function SigninForm() {
             <Button onClick={submitForm} variant="primary" type="submit">
                 Submit
             </Button>
-            <Toaster onClose={closeToaster} isActive={Boolean(loginError)} text={loginError}/> {/* loginError = '' => false, loginError = 'Ошибка' => true */}
+            <Toaster onClose={closeToaster} isActive={Boolean(loginError)} text={loginError} /> {/* loginError = '' => false, loginError = 'Ошибка' => true */}
         </Form>
     )
 }

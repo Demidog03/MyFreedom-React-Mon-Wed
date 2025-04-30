@@ -8,7 +8,7 @@ import MovieSearchInput from '../../components/movie-search-input/MovieSearchInp
 function MoviesFiltersPage() {
     return (
         <>
-            <CustomNavbar />
+            <CustomNavbar/>
             <Container fluid="xl">
                 <div className={classes.filtersContainer}>
                     <MoviesFilters />
