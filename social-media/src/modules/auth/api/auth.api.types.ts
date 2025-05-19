@@ -1,4 +1,4 @@
-import { Genders } from "../../../types"
+import { Genders, Roles } from "../../../types"
 
 export interface RegisterBody {
     username: string

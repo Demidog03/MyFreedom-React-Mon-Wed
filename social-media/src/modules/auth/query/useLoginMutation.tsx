@@ -1,20 +1,18 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { loginApi } from '../api/auth.api'
-import { AxiosError } from 'axios'
-import { RequestError } from '../../../types'
-import { useSnackbar } from 'notistack';
+import { useAuthStore } from '../store/auth.store'
 
 export default function useLoginMutation() {
-    const { enqueueSnackbar } = useSnackbar()
+    const { setToken } = useAuthStore()
+    const query = useQueryClient()
 
     return useMutation({
         mutationFn: loginApi,
-        onError: (error: AxiosError<RequestError>) => {
-            enqueueSnackbar(error.response?.data?.error || 'Error when login user', {
-                variant: 'error',
-                autoHideDuration: 3000,
-                anchorOrigin: { horizontal: 'right', vertical: 'top' }
-            })
+        onSuccess: (response) => {
+            if (response?.data?.accessToken) {
+                setToken(response.data.accessToken)
+                query.invalidateQueries({ queryKey: ['profile'] })
+            }
         }
     })
 }
