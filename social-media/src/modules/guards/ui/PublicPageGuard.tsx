@@ -1,6 +1,7 @@
 import { JSX, useEffect } from "react"
 import useGetProfileQuery from "../../profile/query/useGetProfileQuery"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
+import { useAuthStore } from "../../auth/store/auth.store"
 
 interface PublicPageGuardProps {
     children: JSX.Element
@@ -8,16 +9,18 @@ interface PublicPageGuardProps {
 
 function PublicPageGuard({ children }: PublicPageGuardProps) {
     const { isSuccess } = useGetProfileQuery()
+    const { token } = useAuthStore()
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
-        if(isSuccess) {
-            navigate('/')
+        if(isSuccess && token) {
+            navigate(location.state?.from || '/')
         }
-    }, [isSuccess])
+    }, [isSuccess, token])
 
-    if(isSuccess) {
-        return <></>
+    if(isSuccess && token) {
+        return null
     }
 
     return children

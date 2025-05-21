@@ -17,7 +17,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { JSX, useState } from 'react';
+import { useAuthStore } from '../../modules/auth/store/auth.store';
+import RandomBgAvatar from './RandomBgAvatar';
+import useGetProfileQuery from '../../modules/profile/query/useGetProfileQuery';
+import { Stack } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -86,7 +91,11 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+  const { clearToken } = useAuthStore()
+  const { data: profile } = useGetProfileQuery()
+
+  console.log(profile)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -95,6 +104,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  function logoutUser() {
+    clearToken()
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -115,9 +128,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography>
+          <Stack sx={{ width: '100%' }} flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6" noWrap component="div">
+              Persistent drawer
+            </Typography>
+            {profile && <RandomBgAvatar firstName={profile?.firstName} lastName={profile?.lastName}/>}
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -139,8 +155,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        
+          <List>
+          {['Inbox'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -151,19 +168,17 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+        <List onClick={logoutUser} style={{ marginTop: 'auto' }}>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <ExitToAppIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+           </ListItem>
         </List>
+       
       </Drawer>
       <Main open={open}>
         <DrawerHeader />

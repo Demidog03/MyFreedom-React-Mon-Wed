@@ -11,6 +11,9 @@ export const useAuthStore = create<AuthState>()(
                     token: undefined,
                     setToken: (newToken) => {
                         set(state => { state.token = newToken })
+                    },
+                    clearToken: () => {
+                        set(state => { state.token = undefined })
                     }
                 }),
                 {

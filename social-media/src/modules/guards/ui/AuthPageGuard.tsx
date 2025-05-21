@@ -1,6 +1,7 @@
 import { JSX, useEffect } from "react"
 import useGetProfileQuery from "../../profile/query/useGetProfileQuery"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
+import { useAuthStore } from "../../auth/store/auth.store"
 
 interface AuthPageGuardProps {
     children: JSX.Element
@@ -8,15 +9,17 @@ interface AuthPageGuardProps {
 
 function AuthPageGuard({ children }: AuthPageGuardProps) {
     const { isSuccess } = useGetProfileQuery()
+    const { token } = useAuthStore()
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
-        if(!isSuccess) {
-            navigate('/sign-in')
+        if(!isSuccess || !token) {
+            navigate('/sign-in', { state: { from: location.pathname } })
         }
-    }, [isSuccess])
+    }, [isSuccess, token])
 
-    if(!isSuccess) {
+    if(!isSuccess || !token) {
         return null
     }
 
